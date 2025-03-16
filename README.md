@@ -1,6 +1,27 @@
 # Key-Value Cache Service
 
+
 A high-performance in-memory key-value cache service built with Rust, featuring concurrent access and automatic eviction.
+
+## Docker Image Information
+
+- **Image Name**: `manishautomate/manish:v1`
+- **Docker Hub Repository**: [manishautomate/manish](https://hub.docker.com/r/manishautomate/manish)
+- **Exposed Port**: 7171
+
+## Quick Start
+
+Pull and run the image directly from Docker Hub:
+
+```bash
+# Pull the image
+docker pull manishautomate/manish:v1
+
+# Run the container
+docker run -p 7171:7171 manishautomate/manish:v1
+
+The service will be available at `http://localhost:7171`.
+
 
 ## Overview
 
