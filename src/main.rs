@@ -6,6 +6,7 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use tokio::time::{interval, Duration};
 use std::process::Command;
+use sysinfo::{System, SystemExt};
 
 /// Maximum number of entries allowed in the cache when memory usage is below threshold.
 const DEFAULT_MAX_ENTRIES: usize=100_000;
@@ -90,7 +91,15 @@ impl Cache {
             }
         }
         
-        // Fallback: estimate memory usage based on cache size
+        // Second backup: Try using sysinfo library
+        let mut sys = System::new_all();
+        sys.refresh_memory();
+        if sys.total_memory() > 0 {
+            let percent = (sys.used_memory() as f64 / sys.total_memory() as f64) * 100.0;
+            return percent as usize;
+        }
+        
+        // Final fallback: estimate memory usage based on cache size
         // This is a very rough approximation
         let entry_count=self.map.len();
         let avg_key_size=32; // Assume average key size of 32 bytes
